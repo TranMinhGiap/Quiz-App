@@ -1,0 +1,33 @@
+.layout{
+  min-height: 100vh;
+}
+.main{
+  padding: 20px;
+}
+.menu{
+  display: flex;
+  margin: 0;
+  padding: 0;
+  gap: 32px;
+  &__item{
+    list-style-type: none;
+    font-size: 18px;
+  }
+  &__link{
+    color: white;
+    padding: 10px 0;
+    transition: all 0.3s ease-in-out;
+    &:hover{
+      color: #ccc;
+    }
+  }
+}
+.footer{
+  text-align: center;                
+  background: orange; 
+  color: white;
+  backdrop-filter: blur(10px);          
+  -webkit-backdrop-filter: blur(10px);   
+  border-top: 1px solid rgba(255, 255, 255, 0.3);
+  padding: 20px;
+}

@@ -1,0 +1,58 @@
+import LayoutDefault from "../layout";
+import PrivateRoutes from "../components/PrivateRoutes";
+import Home from "../pages/Home";
+import Error404 from "../pages/Error404";
+import Login from "../pages/Login";
+import Register from "../pages/Register";
+import Answer from "../pages/Answer";
+import Quiz from "../pages/Quiz";
+import Topic from "../pages/Topic";
+import Result from "../pages/Result";
+
+const routes = [
+  {
+    path: "/",
+    element: <LayoutDefault/>,
+    children: [
+      {
+        index: true,
+        element: <Home/>
+      },
+      {
+        path: "/login",
+        element: <Login/>
+      },
+      {
+        path: "/register",
+        element: <Register/>
+      },
+      {
+        element: <PrivateRoutes/>,
+        children: [
+          {
+            path: '/answers',
+            element: <Answer/>
+          },
+          {
+            path: '/quiz',
+            element: <Quiz/>
+          },
+          {
+            path: '/result',
+            element: <Result/>
+          },
+          {
+            path: '/topic',
+            element: <Topic/>
+          }
+        ]
+      },
+      {
+        path: "*",
+        element: <Error404/>
+      }
+    ]
+  }
+];
+
+export default routes;
