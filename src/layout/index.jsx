@@ -1,10 +1,13 @@
 import { Link, NavLink, Outlet } from "react-router-dom";
 import { Layout, Flex, Space, Button } from 'antd';
 import './Layout.scss';
+import { useSelector } from "react-redux";
 
 const { Header, Footer, Content } = Layout;
 
 const LayoutDefault = () => {
+  const auth = useSelector((store) => store.auth);
+  console.log(auth);
 
   return (
     <Layout className='layout'>
