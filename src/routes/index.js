@@ -35,7 +35,7 @@ const routes = [
             element: <Answer/>
           },
           {
-            path: '/quiz',
+            path: '/quiz/:id',
             element: <Quiz/>
           },
           {
