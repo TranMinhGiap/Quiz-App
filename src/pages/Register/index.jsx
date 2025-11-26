@@ -3,7 +3,7 @@ import { LockOutlined, UserOutlined, MailOutlined } from "@ant-design/icons";
 import { useNavigate, Link } from "react-router-dom";
 import Cookies from 'js-cookie';
 import { useState } from "react";
-import { POST } from "../../utils/request";
+import { POST, GET } from "../../utils/request";
 import { useDispatch } from "react-redux";
 import { setAuth } from "../../redux/features/authSlice";
 
@@ -28,16 +28,24 @@ const Register = () => {
         password: values.password,
         token
       }
-      const result = await POST("/users", payload);
-      if (result) {
-        Cookies.set('token', result.token, { secure: true, sameSite: 'strict' });
-        dispatch(setAuth(result));
-        navigate("/", { replace: true });
-      } else {
+      const checkExitsEmail = await GET('/users', { email: payload.email });
+      if(checkExitsEmail && checkExitsEmail.length > 0){
         messageApi.open({
           type: 'error',
-          content: "Có lỗi khi tạo tài khoản"
+          content: "Email đã tồn tại! Vui lòng nhập email khác"
         });
+      } else {
+        const result = await POST("/users", payload);
+        if (result) {
+          Cookies.set('token', result.token, { secure: true, sameSite: 'strict' });
+          dispatch(setAuth(result));
+          navigate("/", { replace: true });
+        } else {
+          messageApi.open({
+            type: 'error',
+            content: "Có lỗi khi tạo tài khoản"
+          });
+        }
       }
     } catch (error) {
       messageApi.open({
