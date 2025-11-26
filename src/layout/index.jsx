@@ -7,7 +7,7 @@ const { Header, Footer, Content } = Layout;
 
 const LayoutDefault = () => {
   const auth = useSelector((store) => store.auth);
-  console.log(auth);
+  // console.log(auth);
 
   return (
     <Layout className='layout'>
