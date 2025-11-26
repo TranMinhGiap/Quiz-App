@@ -8,6 +8,7 @@ import Answer from "../pages/Answer";
 import Quiz from "../pages/Quiz";
 import Topic from "../pages/Topic";
 import Result from "../pages/Result";
+import Logout from "../pages/Logout";
 
 const routes = [
   {
@@ -44,6 +45,10 @@ const routes = [
           {
             path: '/topic',
             element: <Topic/>
+          },
+          {
+            path: '/logout',
+            element: <Logout/>
           }
         ]
       },

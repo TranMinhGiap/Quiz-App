@@ -30,22 +30,37 @@ const LayoutDefault = () => {
               <li className="menu__item">
                 <NavLink className="menu__link" to='/'>Home</NavLink>
               </li>
-              <li className="menu__item">
-                <NavLink className="menu__link" to='/topic'>Topic</NavLink>
-              </li>
-              <li className="menu__item">
-                <NavLink className="menu__link" to='/answers'>Answer</NavLink>
-              </li>
+              {auth.isLoggedIn && (
+                <>
+                  <li className="menu__item">
+                    <NavLink className="menu__link" to='/topic'>Topic</NavLink>
+                  </li>
+                  <li className="menu__item">
+                    <NavLink className="menu__link" to='/answers'>Answer</NavLink>
+                  </li>
+                </>
+              )}
             </ul>
           </Space>
           {/* Info User */}
           <Space>
-            <Link to='/login'>
-              <Button color="pink" variant="solid">Đăng nhập</Button>
-            </Link>
-            <Link to='/register'>
-              <Button color="pink" variant="solid">Đăng kí</Button>
-            </Link>
+            {auth.isLoggedIn ? (
+              <Space size={16}>
+                <span style={{ fontSize: 18, color: 'white' }}>Xin chào: {auth.user.fullName}</span>
+                <Link to='/logout'>
+                  <Button color="pink" variant="solid">Đăng xuất</Button>
+                </Link>
+              </Space>
+            ) : (
+              <>
+                <Link to='/login'>
+                  <Button color="pink" variant="solid">Đăng nhập</Button>
+                </Link>
+                <Link to='/register'>
+                  <Button color="pink" variant="solid">Đăng kí</Button>
+                </Link>
+              </>
+            )}
           </Space>
         </Flex>
       </Header>
