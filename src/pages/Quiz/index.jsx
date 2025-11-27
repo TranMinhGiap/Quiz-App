@@ -16,7 +16,8 @@ import {
   MinusCircleTwoTone,
 } from "@ant-design/icons";
 import { useParams } from "react-router-dom";
-import { GET } from "../../utils/request";
+import { GET, POST } from "../../utils/request";
+import { useSelector } from "react-redux";
 
 // ==========================
 // QUIZ COMPONENT
@@ -28,6 +29,7 @@ const Quiz = () => {
   const [loading, setLoading] = useState(false);
   const [isSubmitted, setSubmitted] = useState(false);
   const [score, setScore] = useState(0);
+  const auth = useSelector((store) => store.auth);
 
   const { id } = useParams();
   const [messageApi, contextHolder] = message.useMessage();
@@ -79,7 +81,10 @@ const Quiz = () => {
   // ==========================
   // SUBMIT QUIZ
   // ==========================
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
+    if(!auth.user.id){
+      return;
+    }
     let correct = 0;
 
     quiz.forEach((q) => {
@@ -88,7 +93,41 @@ const Quiz = () => {
 
     setScore(correct);
     setSubmitted(true);
+
+    // Lưu kết quả bài làm
+    const result = Object.entries(answers).map(([k, v]) => ({ questionId: k, answer: v }));
+    const newAnswer = {
+      userId: auth.user.id,
+      topicId: id,
+      answers: result
+    }
+
+    try {
+      const result = await POST("/answers", newAnswer);
+      if (result) {
+        messageApi.open({
+          type: 'success',
+          content: "Kết quả bài làm đã được lưu"
+        });
+      }
+    } catch (error) {
+      messageApi.open({
+        type: 'error',
+        content: "Có lỗi khi lưu kết quả bài làm"
+      });
+    }
   };
+
+  // Redo Quiz
+  const handleRedo = () => {
+    setAnswers({});
+    setSubmitted(false);
+    setScore(0);
+    messageApi.open({
+      type: 'success',
+      content: "Bắt đầu làm lại bài"
+    });
+  }
 
   // ==========================
   // GET STATUS ICON
@@ -187,9 +226,13 @@ const Quiz = () => {
               ))}
             </div>
 
-            {!isSubmitted && quiz.length > 0 && (
+            {!isSubmitted && quiz.length > 0 ? (
               <Button type="primary" size="large" block style={{ marginTop: 25 }} onClick={handleSubmit}>
                 Nộp bài
+              </Button>
+            ) : (
+              <Button color="primary" variant="filled" size="large" block style={{ marginTop: 25 }} onClick={handleRedo}>
+                Làm lại
               </Button>
             )}
           </Card>
