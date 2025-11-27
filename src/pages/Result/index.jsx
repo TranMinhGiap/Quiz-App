@@ -99,6 +99,38 @@ const Result = () => {
   }, [submission, quiz]);
 
   // ============================================================
+  // ĐÁNH GIÁ
+  // ============================================================
+  const levelInfo = useMemo(() => {
+    if (accuracy >= 90) {
+      return {
+        label: "Xuất sắc",
+        color: "green",
+        desc: "Hiệu suất làm bài rất tốt, hãy tiếp tục phát huy!",
+      };
+    }
+    if (accuracy >= 80) {
+      return {
+        label: "Khá",
+        color: "blue",
+        desc: "Bạn làm khá tốt, cố gắng thêm chút nữa sẽ lên Xuất sắc!",
+      };
+    }
+    if (accuracy >= 50) {
+      return {
+        label: "Trung bình",
+        color: "orange",
+        desc: "Bạn cần ôn tập thêm để cải thiện kết quả.",
+      };
+    }
+    return {
+      label: "Yếu",
+      color: "red",
+      desc: "Đừng nản, hãy xem lại các câu sai và thử lại lần nữa nhé!",
+    };
+  }, [accuracy]);
+
+  // ============================================================
   useEffect(() => {
     if (accuracy >= 80) {
       const duration = 3000;
@@ -296,6 +328,18 @@ const Result = () => {
                   </Title>
                 </Col>
               </Row>
+
+              {/* MỨC ĐỘ ĐÁNH GIÁ */}
+              <Divider style={{ margin: "8px 0 12px" }} />
+              <Space vertical>
+                <Text type="secondary">Đánh giá mức độ</Text>
+                <Space align="center">
+                  <Tag color={levelInfo.color} style={{ fontSize: 14 }}>
+                    {levelInfo.label}
+                  </Tag>
+                  <Text type="secondary">{levelInfo.desc}</Text>
+                </Space>
+              </Space>
             </Card>
           </Col>
 
